@@ -5,7 +5,22 @@ from starlette.middleware.cors import CORSMiddleware
 
 from syntax_checker import check_code, extract_error_message
 
-app = FastAPI()
+SWAGGER_HEADERS = {
+    "title": "Code Syntax api",
+    "version": "1.0.0",
+}
+
+app = FastAPI(
+    swagger_ui_parameters={
+        "deepLinking": True,
+        "displayRequestDuration": True,
+        "operationsSorter": "method",
+        "filter": True,
+        "tagsSorter": "alpha",
+        "syntaxHighlight.theme": "tomorrow-night",
+    },
+    **SWAGGER_HEADERS
+)
 
 app.add_middleware(
     CORSMiddleware,
