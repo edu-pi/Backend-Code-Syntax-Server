@@ -2,6 +2,7 @@ import requests
 from fastapi import FastAPI
 from pydantic import BaseModel
 from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import JSONResponse
 
 from syntax_checker import check_code, extract_error_message
 
@@ -36,11 +37,20 @@ class RequestCode(BaseModel):
 
 
 @app.post("/edupi_syntax/v1/python")
-async def read_root(request_code: RequestCode):
+async def syntax_check(request_code: RequestCode):
     result = check_code(request_code.source_code)
-
-    if result:
-        return requests.post("http://localhost:8001/edupi_visualize/v1/python")
+    if result is True:
+        # 시각화 분석 엔진에게 분석 요청
+        response = requests.post(
+            "http://localhost:8081/edupi_visualize/v1/python",
+            json={"source_code": request_code.source_code}
+        )
+        return JSONResponse(
+            status_code=200,
+            content=response.json()
+        )
     else:
-        return {"error": extract_error_message(result)}
-
+        return JSONResponse(
+            status_code=400,
+            content={"error": extract_error_message(result)}
+        )
