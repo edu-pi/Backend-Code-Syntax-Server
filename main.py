@@ -32,8 +32,9 @@ app.add_middleware(
 )
 
 
-class RequestCode(BaseModel):
-    source_code: str
+@app.get("/edupi_syntax")
+def root():
+    return JSONResponse(status_code=200)
 
 
 @app.post("/edupi_syntax/v1/python")
