@@ -9,7 +9,7 @@ def check_code(code):
     code = textwrap.dedent(code)
 
     # 임시 파일을 생성하여 코드 저장
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=True) as temp_file:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False) as temp_file:
         temp_file.write(code)
         temp_file_path = temp_file.name
 
