@@ -40,7 +40,7 @@ def root():
 @app.post("/edupi_syntax/v1/python")
 async def syntax_check(request_code: RequestCode):
     result = check_code(request_code.source_code)
-    if result is True:
+    if result:
         # 시각화 분석 엔진에게 분석 요청
         response = requests.post(
             "http://localhost:8081/edupi_visualize/v1/python",
