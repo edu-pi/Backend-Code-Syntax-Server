@@ -1,9 +1,9 @@
 import requests
 from fastapi import FastAPI
-from pydantic import BaseModel
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 
+from request_code import RequestCode
 from syntax_checker import check_code, extract_error_message
 
 SWAGGER_HEADERS = {
@@ -55,3 +55,4 @@ async def syntax_check(request_code: RequestCode):
             status_code=400,
             content={"error": extract_error_message(result)}
         )
+
