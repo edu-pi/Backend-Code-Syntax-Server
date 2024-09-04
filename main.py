@@ -50,7 +50,7 @@ async def syntax_check(request_code: RequestCode):
             status_code=200,
             content=response.json()
         )
-    else:
+    else:   # 문법 오류가 있을 때
         return JSONResponse(
             status_code=400,
             content={"error": extract_error_message(result)}
