@@ -1,9 +1,20 @@
+import json
 import requests
+
 from fastapi import FastAPI
 from starlette.responses import JSONResponse
-
 from request_code import RequestCode
 from syntax_checker import check_code, extract_error_message
+
+
+# 설정 파일 로드
+with open('config.json') as config_file:
+    config = json.load(config_file)
+
+# 환경 선택
+environment = 'development'  # 'production'으로 변경 시 배포용 URL 사용
+API_URL = config[environment]['API_URL']
+
 
 SWAGGER_HEADERS = {
     "title": "Code Syntax api",
@@ -37,7 +48,7 @@ async def syntax_check(request_code: RequestCode):
     if return_code == 0:
         # 시각화 분석 엔진에게 분석 요청
         response = requests.post(
-            "http://localhost:8000/edupi_visualize/v1/python",
+            API_URL,
             json={"source_code": request_code.source_code}
         )
         return JSONResponse(
