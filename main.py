@@ -12,7 +12,7 @@ with open('config.json') as config_file:
     config = json.load(config_file)
 
 # 환경 선택
-environment = 'development'  # 'production'으로 변경 시 배포용 URL 사용
+environment = config['environment']
 API_URL = config[environment]['API_URL']
 
 SWAGGER_HEADERS = {
