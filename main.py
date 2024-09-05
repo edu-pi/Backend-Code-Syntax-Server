@@ -1,6 +1,5 @@
 import requests
 from fastapi import FastAPI
-from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 
 from request_code import RequestCode
@@ -26,16 +25,19 @@ app = FastAPI(
 
 @app.get("/edupi_syntax")
 def root():
-    return JSONResponse(status_code=200)
+    return JSONResponse(
+        status_code=200,
+        content="ok")
 
 
 @app.post("/edupi_syntax/v1/python")
 async def syntax_check(request_code: RequestCode):
-    result = check_code(request_code.source_code)
-    if result:
+    return_code, stdout = check_code(request_code.source_code)
+
+    if return_code == 0:
         # 시각화 분석 엔진에게 분석 요청
         response = requests.post(
-            "http://localhost:8081/edupi_visualize/v1/python",
+            "http://localhost:8000/edupi_visualize/v1/python",
             json={"source_code": request_code.source_code}
         )
         return JSONResponse(
@@ -45,6 +47,6 @@ async def syntax_check(request_code: RequestCode):
     else:   # 문법 오류가 있을 때
         return JSONResponse(
             status_code=400,
-            content={"error": extract_error_message(result)}
+            content={"error": extract_error_message(stdout)}
         )
 

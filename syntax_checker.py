@@ -20,11 +20,10 @@ def check_code(code):
         stderr=subprocess.PIPE,
         text=True
     )
-
     # 임시 파일 삭제
     subprocess.run(['rm', temp_file_path])
 
-    return True if not result.stdout else result.stdout
+    return result.returncode, result.stdout
 
 
 def extract_error_message(error_string):
