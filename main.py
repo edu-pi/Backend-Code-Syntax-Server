@@ -1,19 +1,20 @@
-import json
+import os.path
 import requests
 
 from fastapi import FastAPI
+from dotenv import load_dotenv
 from starlette.responses import JSONResponse
+
 from request_code import RequestCode
 from syntax_checker import check_code, extract_error_message
 
+load_dotenv()
 
-# 설정 파일 로드
-with open('config.json') as config_file:
-    config = json.load(config_file)
 
-# 환경 선택
-environment = config['environment']
-API_URL = config[environment]['API_URL']
+class Settings:
+    ENVIRONMENT = os.getenv('ENVIRONMENT')  # 환경 변수 ENVIRONMENT를 읽음
+    ENGINE_SERVER = os.getenv(f'{ENVIRONMENT.upper()}_ENGINE_SERVER')
+
 
 SWAGGER_HEADERS = {
     "title": "Code Syntax api",
@@ -40,13 +41,12 @@ def root():
         content="ok")
 
 
-@app.post("/edupi_syntax/v1/python")
-async def syntax_check(request_code: RequestCode):
-    return_code, stdout = check_code(request_code.source_code)
+@app.post("/edupi_syntax/v1/check/static")
+async def syntax_check(code: RequestCode):
+    return_code, stdout = check_code(code.source_code)
 
     # 문법 오류가 있을 때
     if return_code != 0:
-        # 오류 내용과 함께 BAD_REQUEST 반환
         return JSONResponse(
             status_code=400,
             content={"error": extract_error_message(stdout)}
@@ -54,12 +54,11 @@ async def syntax_check(request_code: RequestCode):
 
     # 시각화 분석 엔진에게 코드 분석 요청
     response = requests.post(
-        API_URL,
-        json={"source_code": request_code.source_code}
+        Settings.ENGINE_SERVER,
+        json={"source_code": code.source_code}
     )
+
     return JSONResponse(
         status_code=200,
         content=response.json()
     )
-
-
