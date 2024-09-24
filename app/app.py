@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from starlette.responses import JSONResponse
 
-from routes import router
+from app.api.check import router as check_router
 
 
 SWAGGER_HEADERS = {
@@ -22,7 +22,7 @@ app = FastAPI(
 )
 
 # Including routes from the routes.py file
-app.include_router(router)
+app.include_router(check_router,  prefix="/edupi_syntax")
 
 
 

@@ -1,24 +1,20 @@
-import logging
 import requests
 from fastapi import APIRouter
 from starlette.responses import JSONResponse
 
-from models.error_code import ErrorCode
-from models.error_response import ErrorResponse
-from models.success_reponse import SuccessResponse
-from services.request_code import RequestCode
-from services.syntax_checker import check_code, extract_error_message
-from settings import Settings
+from app.utils.logger import logger
+from app._config.settings import Settings
+from app.models.error_code import ErrorCode
+from app.models.error_response import ErrorResponse
+from app.models.success_reponse import SuccessResponse
+from app.models.code_request import CodeRequest
+from app.services.syntax_checker import check_code, extract_error_message
 
 router = APIRouter()
 
-# init logging
-logger = logging.getLogger('uvicorn.logger')
-logger.setLevel(logging.INFO)
 
-
-@router.post("/edupi_syntax/v1/check/static")
-async def syntax_check(code: RequestCode):
+@router.post("/check/v1/static")
+async def syntax_check(code: CodeRequest):
     return_code, stdout = check_code(code.source_code)
 
     # 문법 오류가 있을 때
@@ -30,6 +26,7 @@ async def syntax_check(code: RequestCode):
             detail_message=ErrorCode.STATIC_SYNTAX_ERROR.message,
             result=syntax_error_message
         )
+
         logger.info(f"Fail syntax check [code : {code.source_code}, reason: {syntax_error_message}]")
 
         return JSONResponse(
