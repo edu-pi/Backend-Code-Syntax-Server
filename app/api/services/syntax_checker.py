@@ -3,8 +3,11 @@ import subprocess
 import tempfile
 import textwrap
 
+from app.exception.custom_error import CustomError
+from app.exception.invalid_exception import InvalidException
 
-def check_code(code):
+
+def check(code):
     # 들여쓰기 제거
     code = textwrap.dedent(code)
 
@@ -23,7 +26,15 @@ def check_code(code):
     # 임시 파일 삭제
     subprocess.run(['rm', temp_file_path])
 
-    return result.returncode, result.stdout
+    if result.returncode != 0:
+        syntax_error_message = extract_error_message(result.stdout)
+
+        raise InvalidException(
+            custom_error=CustomError.STATIC_SYNTAX_ERROR,
+            result={"error": syntax_error_message}
+        )
+
+    return True
 
 
 def extract_error_message(error_string):
