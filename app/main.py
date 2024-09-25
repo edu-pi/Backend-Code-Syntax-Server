@@ -1,8 +1,9 @@
 from fastapi import FastAPI
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, StreamingResponse
 
 from app.exception import exception_handlers
-from app.api.check import router as check_router
+from app.route.check import router as check_router
+from app.utils.logger import log_request, log_response
 
 SWAGGER_HEADERS = {
     "title": "Code Syntax api",
@@ -21,13 +22,18 @@ app = FastAPI(
     **SWAGGER_HEADERS
 )
 
-# Including routes from the routes.py file
+# 미들웨어 등록
+app.middleware("http")(log_request)
+app.middleware("http")(log_response)
+
+# 라우터 등록
 app.include_router(check_router,  prefix="/edupi_syntax")
-# 예외 핸들러를 app에 연결
+
+# 핸들러 등록
 exception_handlers.setup_exception_handlers(app)
 
 
-@app.get("/edupi_syntax")
+@app.get("/edupi_syntax", response_class=JSONResponse)
 def root():
     return JSONResponse(
         status_code=200,
