@@ -1,8 +1,8 @@
 from starlette import status
 
-from app.route.exception.base_custom_exception import BaseCustomException
-from app.route.exception.enum.error_enum import ErrorEnum
-from app.route.exception.invalid_exception import InvalidException
+from app.route.services.exception.base_custom_exception import BaseCustomException
+from app.route.services.exception.enum.error_enum import ErrorEnum
+from app.route.services.exception.invalid_exception import InvalidException
 from app.route.models.error_response import ErrorResponse
 
 from fastapi import FastAPI, Request
