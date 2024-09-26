@@ -30,26 +30,3 @@ def setup_exception_handlers(app: FastAPI):
             status_code=exc.status_code,
             content=response.to_dict()
         )
-
-    # @app.exception_handler(Exception)
-    # async def exception_handler(request: Request, exc: Exception):
-    #     request_info = {
-    #         "method": request.method,
-    #         "url": str(request.url),
-    #         "headers": dict(request.headers),
-    #         "client_ip": request.client.host,  # Client IP address
-    #     }
-    #
-    #     response = ErrorResponse(
-    #         code=CustomError.UNKNOWN_ERROR.code,
-    #         detail=CustomError.UNKNOWN_ERROR.detail,
-    #         result={
-    #             "error_message": str(exc),  # Basic exception message
-    #             "request_info": request_info
-    #         }
-    #     )
-    #
-    #     return JSONResponse(
-    #         status_code=status.HTTP_400_BAD_REQUEST,
-    #         content=response.to_dict()
-    #     )
