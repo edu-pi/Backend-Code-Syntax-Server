@@ -1,4 +1,7 @@
+from starlette import status
+
 from app.route.exception.base_custom_exception import BaseCustomException
+from app.route.exception.enum.error_enum import ErrorEnum
 from app.route.exception.invalid_exception import InvalidException
 from app.route.models.error_response import ErrorResponse
 
@@ -15,7 +18,7 @@ def setup_exception_handlers(app: FastAPI):
             result=exc.result
         )
         return JSONResponse(
-            status_code=exc.error_enum.status,
+            status_code=exc.status,
             content=response.to_dict()
         )
 
@@ -27,6 +30,18 @@ def setup_exception_handlers(app: FastAPI):
             result=exc.result
         )
         return JSONResponse(
-            status_code=exc.error_enum.status,
+            status_code=exc.status,
+            content=response.to_dict()
+        )
+
+    @app.exception_handler(Exception)
+    async def exception_handler(request: Request, exc: Exception):
+        response = ErrorResponse(
+            code=ErrorEnum.UNKNOWN_ERROR.code,
+            detail=ErrorEnum.UNKNOWN_ERROR.detail,
+        )
+
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
             content=response.to_dict()
         )
