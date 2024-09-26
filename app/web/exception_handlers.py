@@ -1,6 +1,6 @@
 from starlette import status
 
-from app.route.services.exception.base_custom_exception import BaseCustomException
+from app.route.services.exception.base_exception import BaseCustomException
 from app.route.services.exception.enum.error_enum import ErrorEnum
 from app.route.services.exception.invalid_exception import InvalidException
 from app.route.models.error_response import ErrorResponse
@@ -39,6 +39,7 @@ def setup_exception_handlers(app: FastAPI):
         response = ErrorResponse(
             code=ErrorEnum.UNKNOWN_ERROR.code,
             detail=ErrorEnum.UNKNOWN_ERROR.detail,
+            result={}
         )
 
         return JSONResponse(

@@ -1,6 +1,6 @@
 from starlette.status import HTTP_400_BAD_REQUEST
 
-from app.route.services.exception.base_custom_exception import BaseCustomException
+from app.route.services.exception.base_exception import BaseCustomException
 from app.route.services.exception.enum.error_enum import ErrorEnum
 
 
