@@ -1,9 +1,9 @@
 from fastapi import FastAPI
-from starlette.responses import JSONResponse, StreamingResponse
+from starlette.responses import JSONResponse
 
-from app.exception import exception_handlers
+from app.web import exception_handlers
 from app.route.check import router as check_router
-from app.utils.logger import log_request, log_response
+from app.web.logger import log_request, log_response
 
 SWAGGER_HEADERS = {
     "title": "Code Syntax api",

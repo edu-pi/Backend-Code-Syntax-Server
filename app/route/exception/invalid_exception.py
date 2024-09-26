@@ -1,0 +1,15 @@
+from app.route.exception.base_custom_exception import BaseCustomException
+from app.route.exception.enum.error_enum import ErrorEnum
+
+
+class InvalidException(BaseCustomException):
+    def __init__(self, error_enum: ErrorEnum, result: dict):
+        super().__init__(
+            error_enum=error_enum,
+            result={} if result is None else result
+        )
+
+
+class InvalidSyntaxException(InvalidException):
+    pass
+

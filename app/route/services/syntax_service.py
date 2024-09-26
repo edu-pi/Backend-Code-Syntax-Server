@@ -3,8 +3,8 @@ import subprocess
 import tempfile
 import textwrap
 
-from app.exception.custom_error import CustomError
-from app.exception.invalid_exception import InvalidException
+from app.route.exception.enum.error_enum import ErrorEnum
+from app.route.exception.invalid_exception import InvalidSyntaxException
 
 
 def check(code):
@@ -29,8 +29,8 @@ def check(code):
     if result.returncode != 0:
         syntax_error_message = extract_error_message(result.stdout)
 
-        raise InvalidException(
-            custom_error=CustomError.STATIC_SYNTAX_ERROR,
+        raise InvalidSyntaxException(
+            error_enum=ErrorEnum.STATIC_SYNTAX_ERROR,
             result={"error": syntax_error_message}
         )
 

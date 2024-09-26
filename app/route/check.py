@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from starlette.responses import JSONResponse
 
-from app.models.success_reponse import SuccessResponse
-from app.models.code_request import CodeRequest
+from app.route.models.success_reponse import SuccessResponse
+from app.route.models.code_request import CodeRequest
 from app.route.services import syntax_service
 from app.route.services import analsys_service
 
