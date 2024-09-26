@@ -5,7 +5,7 @@ from starlette.responses import JSONResponse
 from app._config.settings import Settings
 from app.models.success_reponse import SuccessResponse
 from app.models.code_request import CodeRequest
-from app.api.services import syntax_checker
+from app.route.services import syntax_checker
 
 router = APIRouter()
 
