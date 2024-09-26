@@ -27,13 +27,13 @@ app.middleware("http")(log_request)
 app.middleware("http")(log_response)
 
 # 라우터 등록
-app.include_router(check_router,  prefix="/edupi_syntax")
+app.include_router(check_router,  prefix="/edupi-syntax")
 
 # 핸들러 등록
 exception_handlers.setup_exception_handlers(app)
 
 
-@app.get("/edupi_syntax", response_class=JSONResponse)
+@app.get("/edupi-syntax", response_class=JSONResponse)
 def root():
     return JSONResponse(
         status_code=200,
