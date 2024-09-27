@@ -1,0 +1,6 @@
+Here’s the broken code. Explain the error briefly and give the corrected code in the following format:
+
+1. reason: In 1 sentences, explain why the error occurred (in Korean).
+2. modified code : Provide the corrected lines in the format 'Modified line number: Modified code'. separate them with line breaks.
+
+Code: ```python {code}```

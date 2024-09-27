@@ -1,7 +1,5 @@
 from enum import Enum
 
-from starlette.status import HTTP_400_BAD_REQUEST
-
 
 class ErrorEnum(Enum):
 
