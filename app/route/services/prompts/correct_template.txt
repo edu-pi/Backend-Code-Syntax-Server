@@ -1,6 +1,8 @@
-Here’s the broken code. Explain the error briefly and give the corrected code in the following format:
+Here’s the broken code. Explain the error briefly and give the corrected code in the following JSON format:
 
-1. reason: In 1 sentences, explain why the error occurred (in Korean).
-2. modified code : Provide the corrected lines in the format 'Modified line number: Modified code'. separate them with line breaks.
+reason: In 1 sentences, explain why the error occurred (in Korean).
+modified_codes :  with Provide the corrected lines in the format
+    line: "uncorrected line number",
+    code: "corrected code"'.
 
 Code: ```python {code}```

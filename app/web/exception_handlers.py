@@ -34,15 +34,15 @@ def setup_exception_handlers(app: FastAPI):
             content=response.to_dict()
         )
 
-    @app.exception_handler(Exception)
-    async def exception_handler(request: Request, exc: Exception):
-        response = ErrorResponse(
-            code=ErrorEnum.UNKNOWN_ERROR.code,
-            detail=ErrorEnum.UNKNOWN_ERROR.detail,
-            result={}
-        )
-
-        return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            content=response.to_dict()
-        )
+    # @app.exception_handler(Exception)
+    # async def exception_handler(request: Request, exc: Exception):
+    #     response = ErrorResponse(
+    #         code=ErrorEnum.UNKNOWN_ERROR.code,
+    #         detail=ErrorEnum.UNKNOWN_ERROR.detail,
+    #         result={}
+    #     )
+    #
+    #     return JSONResponse(
+    #         status_code=status.HTTP_400_BAD_REQUEST,
+    #         content=response.to_dict()
+    #     )
