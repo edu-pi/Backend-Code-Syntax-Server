@@ -2,7 +2,6 @@ from fastapi import APIRouter
 from starlette.responses import JSONResponse
 
 from app.route.models.code_request import CodeRequest
-from app.route.models.correct_request import CorrectRequest
 from app.route.models.success_reponse import SuccessResponse
 from app.route.services import ai_service
 

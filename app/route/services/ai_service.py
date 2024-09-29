@@ -13,7 +13,7 @@ from app.route.services.prompts.prompt_file import PromptFile
 def correct(code: str) -> CorrectResponse:
     # 템플릿 로드
     template_path = os.path.join(os.path.dirname(__file__), 'prompts', PromptFile.CORRECT_TEMPLATE)
-    template = load_template(template_path)
+    template = _load_template(template_path)
 
     prompt = template.format(code=code)
 
@@ -22,7 +22,7 @@ def correct(code: str) -> CorrectResponse:
     return _parse_correct_response(response_data)
 
 
-def load_template(file_path) -> str:
+def _load_template(file_path) -> str:
     with open(file_path, 'r') as file:
         return file.read()
 
@@ -47,7 +47,7 @@ def _call_openai_api(prompt: str) -> json:
         max_tokens=150,
         n=1,  # 한 질문에 응답의 개수
         stop=None,  # 모델 중단 기준 문자열
-        temperature=0.6,  # 같은 질문에 일관성 정도 (0~1 : 높을수록 창의적인 답변)
+        temperature=0.4,  # 같은 질문에 일관성 정도 (0~1 : 높을수록 창의적인 답변)
 
         response_format={"type": "json_object"}
     )
