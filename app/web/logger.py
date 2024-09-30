@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import Request
 from starlette.concurrency import iterate_in_threadpool
 import logging
@@ -19,9 +20,10 @@ def get_logger():
 
 # Request 로깅 미들웨어
 async def log_request(request: Request, call_next):
-    logger.info(f"Request: {request.method} {request.url}")
+    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     body = await request.body()
-    logger.info(f"Request Body: {body.decode()}")
+    logger.info(f"[{current_time}] Request: {request.method} {request.url}  {body.decode()}")
+
     response = await call_next(request)
     return response
 
@@ -34,6 +36,8 @@ async def log_response(request: Request, call_next):
     response_body = [chunk async for chunk in response.body_iterator]
     response.body_iterator = iterate_in_threadpool(iter(response_body))
 
-    logger.info(f"Response : {response.status_code} {response_body[0].decode()}")
+    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    logger.info(f"[{current_time}] Response : {response.status_code} {response_body[0].decode()}")
 
     return response

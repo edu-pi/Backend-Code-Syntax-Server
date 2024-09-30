@@ -1,7 +1,9 @@
 from json import loads
 from os import path
 from time import sleep
-from openai import OpenAI, OpenAIError, APITimeoutError
+
+import aiofiles
+from openai import OpenAIError, APITimeoutError, AsyncOpenAI
 
 from app._config.settings import Settings
 from app.route.models.correct_response import CorrectResponse, ModifiedCode
@@ -11,24 +13,24 @@ from app.route.services.prompts.prompt_file import PromptFile
 from app.web.logger import logger
 
 
-def correct(code: str) -> CorrectResponse:
+async def correct(code: str) -> CorrectResponse:
     # 템플릿 로드
     template_path = path.join(path.dirname(__file__), 'prompts', PromptFile.CORRECT_TEMPLATE)
-    template = _load_template(template_path)
+    template = await _load_template(template_path)
 
     prompt = template.format(code=code)
 
-    response_data = _call_openai_api(prompt)
+    response_data = await _call_openai_api(prompt)
 
-    return _parse_correct_response(response_data)
-
-
-def _load_template(file_path) -> str:
-    with open(file_path, 'r') as file:
-        return file.read()
+    return await _parse_correct_response(response_data)
 
 
-def _parse_correct_response(response_data: dict) -> CorrectResponse:
+async def _load_template(file_path) -> str:
+    async with aiofiles.open(file_path, 'r') as file:
+        return await file.read()
+
+
+async def _parse_correct_response(response_data: dict) -> CorrectResponse:
     modified_codes_data = response_data["modified_codes"]
     # ModifiedCode 리스트 생성
     modified_codes = [
@@ -38,13 +40,13 @@ def _parse_correct_response(response_data: dict) -> CorrectResponse:
     return CorrectResponse(reason=response_data["reason"], modified_codes=modified_codes)
 
 
-def _call_openai_api(prompt: str,  max_retries: int = 2, delay: int = 1) -> dict:
+async def _call_openai_api(prompt: str,  max_retries: int = 2, delay: int = 1) -> dict:
     retries = 0
-    client = OpenAI(api_key=Settings.OPEN_API_KEY, timeout=20, max_retries=1) # 20s
+    client = AsyncOpenAI(api_key=Settings.OPEN_API_KEY, timeout=20, max_retries=1) # 20s
 
     while retries < max_retries:
         try:
-            response = client.chat.completions.create(
+            response = await client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[
                     {"role": "system", "content": prompt},

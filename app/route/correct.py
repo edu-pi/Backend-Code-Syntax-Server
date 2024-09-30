@@ -10,7 +10,7 @@ router = APIRouter()
 
 @router.post("/v1/correct")
 async def syntax_check(code_request: CodeRequest):
-    correct_response = ai_service.correct(code=code_request.source_code)
+    correct_response = await ai_service.correct(code=code_request.source_code)
 
     success_response = SuccessResponse(
         detail="success correct",
