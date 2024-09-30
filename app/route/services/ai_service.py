@@ -7,6 +7,7 @@ from openai import OpenAIError, APITimeoutError, AsyncOpenAI
 
 from app._config.settings import Settings
 from app.route.models.correct_response import CorrectResponse, ModifiedCode
+from app.route.models.hint_response import HintResponse
 from app.route.services.exception.enum.error_enum import ErrorEnum
 from app.route.services.exception.openai_exception import OpenaiException
 from app.route.services.prompts.prompt_file import PromptFile
@@ -14,15 +15,23 @@ from app.web.logger import logger
 
 
 async def correct(code: str) -> CorrectResponse:
-    # 템플릿 로드
     template_path = path.join(path.dirname(__file__), 'prompts', PromptFile.CORRECT_TEMPLATE)
     template = await _load_template(template_path)
 
     prompt = template.format(code=code)
-
     response_data = await _call_openai_api(prompt)
 
-    return await _parse_correct_response(response_data)
+    return await CorrectResponse.of(response_data)
+
+
+async def hint(line: int, code: str) -> HintResponse:
+    template_path = path.join(path.dirname(__file__), 'prompts', PromptFile.HINT_TEMPLATE)
+    template = await _load_template(template_path)
+
+    prompt = template.format(line=line, code=code)
+    response_data = await _call_openai_api(prompt)
+
+    return await HintResponse.of(response_data)
 
 
 async def _load_template(file_path) -> str:
