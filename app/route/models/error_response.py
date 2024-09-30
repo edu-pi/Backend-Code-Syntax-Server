@@ -1,5 +1,5 @@
 class ErrorResponse:
-    def __init__(self, code: str, detail: str, result: dict):
+    def __init__(self, code: str, detail: str, result=None):
         self.code = code
         self.detail = detail
         self.result = {} if result is None else result
