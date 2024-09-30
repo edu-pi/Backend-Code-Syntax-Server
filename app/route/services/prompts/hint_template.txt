@@ -1,5 +1,5 @@
 Here’s the wrong line and broken code. Give the hint in the following JSON format
-hint:  Give me some hints to fix myself, including why I'm wrong, In 1 sentences (in honorifics Korean, Like an educator).
+hint:  Give me some hints to fix myself, including why I'm wrong, In 1 sentences (in Korean, Like an educator).
 line: uncorrected line number
 
 wrong line: {line}

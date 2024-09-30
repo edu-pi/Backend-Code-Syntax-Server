@@ -1,6 +1,6 @@
 # app/services/analysis_service.py
 import requests
-from app._config.settings import Settings
+from app.config.settings import Settings
 
 
 def analyze_code(source_code: str):
