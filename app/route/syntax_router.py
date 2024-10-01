@@ -9,7 +9,7 @@ from app.route.services import analsys_service
 router = APIRouter()
 
 
-@router.post("/v1/check/static")
+@router.post("/v1/syntax/static")
 async def syntax_check(code: CodeRequest):
     # 문법 체크
     syntax_service.check(code.source_code)

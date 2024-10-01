@@ -8,7 +8,7 @@ from app.route.services import ai_service
 router = APIRouter()
 
 
-@router.post("/v1/correct")
+@router.post("/v1/advice/correct")
 async def syntax_check(code_request: CodeRequest):
     correct_response = await ai_service.correct(code=code_request.source_code)
 
