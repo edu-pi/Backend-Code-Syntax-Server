@@ -5,11 +5,11 @@ from app.route.models.code_request import CodeRequest
 from app.route.models.success_reponse import SuccessResponse
 from app.route.services import ai_service
 
-router = APIRouter()
+advice_router = APIRouter()
 
 
-@router.post("/v1/advice/correct")
-async def syntax_check(code_request: CodeRequest):
+@advice_router.post("/v1/advice/correct")
+async def correct(code_request: CodeRequest):
     correct_response = await ai_service.correct(code=code_request.source_code)
 
     success_response = SuccessResponse(

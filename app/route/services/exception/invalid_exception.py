@@ -15,4 +15,3 @@ class InvalidException(BaseCustomException):
 
 class InvalidSyntaxException(InvalidException):
     pass
-

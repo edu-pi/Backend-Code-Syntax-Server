@@ -10,7 +10,7 @@ class ErrorEnum(Enum):
     UNKNOWN_ERROR = ("CS-400999", "처리가 필요한 에러입니다.")
 
     #500
-    OPNEAI_SERVER_ERROR = ("CS-504001", "Open AI API 내부 서버 에러입니다.")
+    OPENAI_SERVER_ERROR = ("CS-504001", "Open AI API 내부 서버 에러입니다.")
 
     def __init__(self, code, detail):
         self.code = code

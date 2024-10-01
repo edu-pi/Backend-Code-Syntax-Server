@@ -6,11 +6,11 @@ from app.route.models.code_request import CodeRequest
 from app.route.services import syntax_service
 from app.route.services import analsys_service
 
-router = APIRouter()
+visualize_router = APIRouter()
 
 
-@router.post("/v1/syntax/static")
-async def syntax_check(code: CodeRequest):
+@visualize_router.post("/v1/visualize")
+async def visualize(code: CodeRequest):
     # 문법 체크
     syntax_service.check(code.source_code)
     # 코드 분석
