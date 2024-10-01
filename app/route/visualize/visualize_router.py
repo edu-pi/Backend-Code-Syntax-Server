@@ -1,10 +1,9 @@
 from fastapi import APIRouter
 from starlette.responses import JSONResponse
 
-from app.route.models.success_reponse import SuccessResponse
-from app.route.models.code_request import CodeRequest
-from app.route.services import syntax_service
-from app.route.services import analsys_service
+from app.web.models.success_reponse import SuccessResponse
+from app.route.visualize.models.code_request import CodeRequest
+from app.route.visualize import analsys_service, syntax_service
 
 visualize_router = APIRouter()
 

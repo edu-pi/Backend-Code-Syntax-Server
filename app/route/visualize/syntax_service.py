@@ -5,8 +5,8 @@ import tempfile
 import textwrap
 from typing import Optional
 
-from app.route.services.exception.enum.error_enum import ErrorEnum
-from app.route.services.exception.invalid_exception import InvalidSyntaxException
+from app.web.exception.enum.error_enum import ErrorEnum
+from app.web.exception.invalid_exception import InvalidSyntaxException
 
 
 def check(code):

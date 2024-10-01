@@ -2,11 +2,10 @@ import os
 
 import pytest
 
-from app.route.services import syntax_service
-from unittest.mock import patch
+from app.route.visualize import syntax_service
 
-from app.route.services.exception.enum.error_enum import ErrorEnum
-from app.route.services.exception.invalid_exception import InvalidSyntaxException
+from app.web.exception.enum.error_enum import ErrorEnum
+from app.web.exception.invalid_exception import InvalidSyntaxException
 
 
 def test_check_fail(mocker):

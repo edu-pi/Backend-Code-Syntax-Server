@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from starlette.responses import JSONResponse
 
 from app.web import exception_handlers
-from app.route.advice_router import advice_router
-from app.route.visualize_router import visualize_router
+from app.route.advice.advice_router import advice_router
+from app.route.visualize.visualize_router import visualize_router
 from app.web.logger import log_request, log_response
 
 SWAGGER_HEADERS = {

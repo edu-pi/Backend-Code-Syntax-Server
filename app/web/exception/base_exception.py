@@ -1,6 +1,6 @@
 from starlette import status
 
-from app.route.services.exception.enum.error_enum import ErrorEnum
+from app.web.exception.enum.error_enum import ErrorEnum
 
 
 class BaseCustomException(Exception):
