@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from app.route.visualize import syntax_service
+from app.route.execute import syntax_service
 
 from app.web.exception.enum.error_enum import ErrorEnum
 from app.web.exception.invalid_exception import InvalidSyntaxException

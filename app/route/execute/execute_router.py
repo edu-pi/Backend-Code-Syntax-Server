@@ -2,13 +2,13 @@ from fastapi import APIRouter
 from starlette.responses import JSONResponse
 
 from app.web.models.success_reponse import SuccessResponse
-from app.route.visualize.models.code_request import CodeRequest
-from app.route.visualize import analsys_service, syntax_service
+from app.route.execute.models.code_request import CodeRequest
+from app.route.execute import analsys_service, syntax_service
 
-visualize_router = APIRouter()
+execute_router = APIRouter()
 
 
-@visualize_router.post("/v1/visualize")
+@execute_router.post("/v1/exec/visualize")
 async def visualize(code: CodeRequest):
     # 문법 체크
     syntax_service.check(code.source_code)
