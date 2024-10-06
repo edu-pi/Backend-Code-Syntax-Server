@@ -3,6 +3,8 @@ from starlette import status
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
+from app.route.execute.exception.code_execute_error import CodeExecuteError
+from app.route.execute.exception.code_syntax_error import CodeSyntaxError
 from app.web.exception.base_exception import BaseCustomException
 from app.web.exception.enum.error_enum import ErrorEnum
 from app.web.exception.invalid_exception import InvalidException
@@ -39,6 +41,16 @@ def setup_exception_handlers(app: FastAPI):
             status_code=status.HTTP_400_BAD_REQUEST,
             content=response.to_dict()
         )
+
+    @app.exception_handler(CodeExecuteError)
+    async def code_execute_exception_handler(request: Request, exc: CodeExecuteError):
+        response = ErrorResponse(code=exc.error_enum.code, detail=exc.error_enum.detail, result=exc.result)
+        return JSONResponse(status_code=exc.status, content=response.to_dict())
+
+    @app.exception_handler(CodeSyntaxError)
+    async def code_execute_exception_handler(request: Request, exc: CodeSyntaxError):
+        response = ErrorResponse(code=exc.error_enum.code, detail=exc.error_enum.detail, result=exc.result)
+        return JSONResponse(status_code=exc.status, content=response.to_dict())
 
     @app.exception_handler(BaseCustomException)
     async def base_exception_handler(request: Request, exc: BaseCustomException):

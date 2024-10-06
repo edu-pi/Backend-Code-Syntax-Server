@@ -6,11 +6,15 @@ from app.web.exception.enum.error_enum import ErrorEnum
 
 
 class LimitEnv:
+
     def __init__(self, input_values):
         self.input_values = input_values
         self.cur_input_index = 0
 
-    def get_limited_globals(self):
+        self.limited_locals = {}
+        self.limited_globals = self._set_limited_globals()
+
+    def _set_limited_globals(self):
         restricted_globals = safe_globals.copy()
 
         # 추가된 필드 설정
@@ -49,14 +53,18 @@ class LimitEnv:
 
     def _input(self, prompt=None):
         if self.cur_input_index < len(self.input_values):
-            # prompt가 주어지면 출력 (실제로는 print가 restricted 환경에서 _print로 연결)
-            if prompt:
-                print(prompt, end="")  # end=""로 줄바꿈 방지
+            if "_print" in self.limited_locals:
+                print_collector = self.limited_locals["_print"]
+            else:
+                print_collector = None
+
+             # prompt가 주어지면 PrintCollector를 통해 출력
+            if prompt and print_collector:
+                print_collector.write(prompt)
 
             input_value = self.input_values[self.cur_input_index]
             self.cur_input_index += 1
 
             return input_value
         else:
-            # 더 이상 입력값이 없을 때
             raise CodeExecuteError(ErrorEnum.INPUT_SIZE_MATCHING_ERROR)

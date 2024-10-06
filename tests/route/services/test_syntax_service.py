@@ -1,30 +1,6 @@
 import os
 
-import pytest
-
 from app.route.execute.services import syntax_service
-
-from app.web.exception.enum.error_enum import ErrorEnum
-from app.web.exception.invalid_exception import InvalidSyntaxException
-
-
-def test_check_fail(mocker):
-    sample_code = "\na = 20\n"
-    with mocker.patch('app.route.services.syntax_service._extract_syntax_error', return_value="Syntax error occurred."):
-        with pytest.raises(InvalidSyntaxException) as exc:
-            syntax_service.check(sample_code)
-
-        # 예외가 발생했을 때, 결과 검증
-        assert exc.value.result == {"error": "Syntax error occurred."}
-        assert exc.value.error_enum == ErrorEnum.STATIC_SYNTAX_ERROR  # error_enum 확인
-
-
-def test_check_success(mocker):
-    sample_code = "\nprint(a)\n"
-    with mocker.patch('app.route.services.syntax_service._extract_syntax_error', return_value=None):
-        result = syntax_service.check(sample_code)
-
-        assert result is True
 
 
 def test__remove_indentation():

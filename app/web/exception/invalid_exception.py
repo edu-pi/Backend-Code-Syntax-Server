@@ -12,6 +12,3 @@ class InvalidException(BaseCustomException):
             result={} if result is None else result
         )
 
-
-class InvalidSyntaxException(InvalidException):
-    pass
