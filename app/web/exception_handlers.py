@@ -8,7 +8,7 @@ from app.route.execute.exception.code_syntax_error import CodeSyntaxError
 from app.web.exception.base_exception import BaseCustomException
 from app.web.exception.enum.error_enum import ErrorEnum
 from app.web.exception.invalid_exception import InvalidException
-from app.web.exception.openai_exception import OpenaiException
+from app.route.advice.exception.openai_exception import OpenaiException
 from app.web.models.error_response import ErrorResponse
 from app.web.logger import logger
 

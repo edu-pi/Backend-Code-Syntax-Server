@@ -8,7 +8,7 @@ from app.config.settings import Settings
 from app.route.advice.models.correct_response import CorrectResponse
 from app.route.advice.models.hint_response import HintResponse
 from app.web.exception.enum.error_enum import ErrorEnum
-from app.web.exception.openai_exception import OpenaiException
+from app.route.advice.exception.openai_exception import OpenaiException
 from app.route.advice.prompts.prompt_file_name import PromptFileName
 from app.web.logger import logger
 
