@@ -1,6 +1,6 @@
 import os
 
-from app.route.execute.services import syntax_service
+from app.route.execute.service import syntax_service
 
 
 def test__remove_indentation():

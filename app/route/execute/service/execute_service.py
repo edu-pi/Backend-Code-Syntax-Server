@@ -2,8 +2,8 @@ import textwrap
 from RestrictedPython import compile_restricted, PrintCollector
 from app.route.execute.exception.code_execute_error import CodeExecuteError
 from app.route.execute.exception.code_syntax_error import CodeSyntaxError
-from app.route.execute.services.limit_env import LimitEnv
-from app.route.execute.services.syntax_service import get_error_message
+from app.route.execute.service.limit_env import LimitEnv
+from app.route.execute.service.syntax_service import get_error_message
 from app.web.exception.enum.error_enum import ErrorEnum
 
 

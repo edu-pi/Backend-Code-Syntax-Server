@@ -3,7 +3,7 @@ import requests
 from app.config.settings import Settings
 
 
-def analyze_code(source_code: str):
+def analyze_code(source_code: str, input: str):
     url = "/".join([Settings.ENGINE_SERVER, "v1", "python"])
     success_response = requests.post(
         url,
