@@ -6,7 +6,7 @@ authors = ["UJeans <jean207@naver.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">=3.11,<3.13"
 fastapi = "^0.112.1"
 uvicorn = "^0.30.6"
 black = "^24.8.0"
@@ -15,6 +15,7 @@ requests = "^2.32.3"
 python-dotenv = "^1.0.1"
 pytest-mock = "^3.14.0"
 openai = "^1.50.2"
+restrictedpython = "^7.3"
 
 [tool.black]
 line-length = 120
