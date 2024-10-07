@@ -1,14 +1,13 @@
-from starlette.status import HTTP_400_BAD_REQUEST
+from starlette import status
 
 from app.web.exception.base_exception import BaseCustomException
 from app.web.exception.enum.error_enum import ErrorEnum
 
 
-class InvalidException(BaseCustomException):
+class CodeSyntaxError(BaseCustomException):
     def __init__(self, error_enum: ErrorEnum, result: dict = None):
         super().__init__(
-            status_code=HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             error_enum=error_enum,
-            result={} if result is None else result
+            result={} if result is None else result,
         )
-
