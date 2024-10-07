@@ -1,7 +1,7 @@
 from starlette.status import HTTP_400_BAD_REQUEST
 
-from app.route.services.exception.base_exception import BaseCustomException
-from app.route.services.exception.enum.error_enum import ErrorEnum
+from app.web.exception.base_exception import BaseCustomException
+from app.web.exception.enum.error_enum import ErrorEnum
 
 
 class InvalidException(BaseCustomException):
@@ -12,6 +12,3 @@ class InvalidException(BaseCustomException):
             result={} if result is None else result
         )
 
-
-class InvalidSyntaxException(InvalidException):
-    pass

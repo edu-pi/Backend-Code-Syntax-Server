@@ -1,17 +1,18 @@
 from fastapi import APIRouter
 from starlette.responses import JSONResponse
 
-from app.route.models.code_request import CodeRequest
-from app.route.models.hint_request import HintRequest
-from app.route.models.success_reponse import SuccessResponse
-from app.route.services import ai_service
+from app.route.advice.models.correct_request import CorrectRequest
+from app.route.advice.models.hint_request import HintRequest
+from app.web.models.success_reponse import SuccessResponse
+from app.route.advice.service import ai_service
 
 advice_router = APIRouter()
 
 
 @advice_router.post("/v1/advice/correct")
-async def correct(code_request: CodeRequest):
-    correct_response = await ai_service.correct(code=code_request.source_code)
+async def correct(correct_request: CorrectRequest):
+
+    correct_response = await ai_service.correct(code=correct_request.source_code)
 
     success_response = SuccessResponse(
         detail="success correct",

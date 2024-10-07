@@ -1,7 +1,7 @@
 from starlette import status
 
-from app.route.services.exception.base_exception import BaseCustomException
-from app.route.services.exception.enum.error_enum import ErrorEnum
+from app.web.exception.base_exception import BaseCustomException
+from app.web.exception.enum.error_enum import ErrorEnum
 
 
 class OpenaiException(BaseCustomException):

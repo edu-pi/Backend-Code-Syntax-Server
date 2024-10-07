@@ -1,16 +1,15 @@
+import aiofiles
 from json import loads
 from os import path
 from time import sleep
-
-import aiofiles
 from openai import OpenAIError, APITimeoutError, AsyncOpenAI
 
 from app.config.settings import Settings
-from app.route.models.correct_response import CorrectResponse, ModifiedCode
-from app.route.models.hint_response import HintResponse
-from app.route.services.exception.enum.error_enum import ErrorEnum
-from app.route.services.exception.openai_exception import OpenaiException
-from app.route.services.prompts.prompt_file_name import PromptFileName
+from app.route.advice.models.correct_response import CorrectResponse
+from app.route.advice.models.hint_response import HintResponse
+from app.web.exception.enum.error_enum import ErrorEnum
+from app.route.advice.exception.openai_exception import OpenaiException
+from app.route.advice.service.prompts.prompt_file_name import PromptFileName
 from app.web.logger import logger
 
 
