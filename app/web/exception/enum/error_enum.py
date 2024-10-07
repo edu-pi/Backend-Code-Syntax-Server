@@ -10,8 +10,7 @@ class ErrorEnum(Enum):
     UNKNOWN_ERROR = ("CS-400999", "처리가 필요한 에러입니다.")
 
     CODE_EXEC_ERROR = "CS-400004", "지원하지 않는 형식입니다."
-    INPUT_SIZE_MATCHING_ERROR = "CS-400005", "입력한 개수가 일치하지 않습니다."
-
+    INPUT_SIZE_MATCHING_ERROR = "CS-400005", "사용자 입력 개수가 일치하지 않습니다."
 
     #500
     OPENAI_SERVER_ERROR = ("CS-504001", "Open AI API 내부 서버 에러입니다.")

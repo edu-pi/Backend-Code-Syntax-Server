@@ -9,13 +9,13 @@ from RestrictedPython import compile_restricted, PrintCollector
 from app.config.restricted_python_config import RestrictedPythonConfig
 from app.route.execute.exception.code_execute_error import CodeExecuteError
 from app.route.execute.exception.code_syntax_error import CodeSyntaxError
+from app.route.execute.exception.input_size_matching_error import InputSizeMatchingError
 from app.web.exception.enum.error_enum import ErrorEnum
 
 
 def execute_code(source_code: str, user_input: str):
     code = textwrap.dedent(source_code)
-    input_values = user_input.split("\n")
-    restricted_config = RestrictedPythonConfig(input_values)
+    restricted_config = RestrictedPythonConfig(user_input)
 
     try:
         byte_code = compile_restricted(code, filename="<string>", mode="exec")
@@ -26,13 +26,16 @@ def execute_code(source_code: str, user_input: str):
 
         return _get_print_result(restricted_locals)
 
+    except InputSizeMatchingError as e:
+        raise CodeExecuteError(e.error_enum)
+
     except SyntaxError as e:
         error = _get_error_message(source_code)
         raise CodeSyntaxError(ErrorEnum.CODE_SYNTAX_ERROR, {"error": error} if e.args else {})
 
     except Exception as e:
         error = _get_error_message(source_code)
-        raise CodeExecuteError(ErrorEnum.CODE_EXEC_ERROR, {"error": error, "message": e.args[0]} if e.args else {})
+        raise CodeExecuteError(ErrorEnum.CODE_EXEC_ERROR, {"error": error} if e.args else {})
 
 
 def _get_print_result(restricted_locals):
