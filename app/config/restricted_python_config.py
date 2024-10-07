@@ -5,17 +5,22 @@ from app.route.execute.exception.code_execute_error import CodeExecuteError
 from app.web.exception.enum.error_enum import ErrorEnum
 
 
-class LimitEnv:
+class RestrictedPythonConfig:
 
     def __init__(self, input_values):
         self.input_values = input_values
         self.cur_input_index = 0
 
         self.limited_locals = {}
-        self.limited_globals = self._set_limited_globals()
 
-    def _set_limited_globals(self):
+    def get_limited_locals(self):
+        return self.limited_locals
+
+    def get_limited_globals(self):
         restricted_globals = safe_globals.copy()
+
+        if not restricted_globals:
+            return restricted_globals
 
         # 추가된 필드 설정
         builtins = restricted_globals.get("__builtins__")
@@ -58,7 +63,6 @@ class LimitEnv:
             else:
                 print_collector = None
 
-             # prompt가 주어지면 PrintCollector를 통해 출력
             if prompt and print_collector:
                 print_collector.write(prompt)
 

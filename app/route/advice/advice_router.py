@@ -11,6 +11,7 @@ advice_router = APIRouter()
 
 @advice_router.post("/v1/advice/correct")
 async def correct(correct_request: CorrectRequest):
+
     correct_response = await ai_service.correct(code=correct_request.source_code)
 
     success_response = SuccessResponse(
