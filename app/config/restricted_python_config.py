@@ -1,14 +1,14 @@
 from RestrictedPython import PrintCollector
 from RestrictedPython.Guards import guarded_setattr, safe_globals
 
-from app.route.execute.exception.code_execute_error import CodeExecuteError
+from app.route.execute.exception.input_size_matching_error import InputSizeMatchingError
 from app.web.exception.enum.error_enum import ErrorEnum
 
 
 class RestrictedPythonConfig:
 
-    def __init__(self, input_values):
-        self.input_values = input_values
+    def __init__(self, user_input):
+        self.input_values = user_input.rstrip().split("\n")
         self.cur_input_index = 0
 
         self.limited_locals = {}
@@ -71,4 +71,4 @@ class RestrictedPythonConfig:
 
             return input_value
         else:
-            raise CodeExecuteError(ErrorEnum.INPUT_SIZE_MATCHING_ERROR)
+            raise InputSizeMatchingError(ErrorEnum.INPUT_SIZE_MATCHING_ERROR)
