@@ -29,9 +29,7 @@ def setup_exception_handlers(app: FastAPI):
     @app.exception_handler(OpenaiException)
     async def openai_exception_handler(request: Request, exc: OpenaiException):
         logger.info(
-            f"{exc.error_enum.code} - OpenAI exception occurred for URI: {request.url}.\n"
-            f"          Error: {_get_unique_value_in_openAI_error(exc.result)}. "
-        )
+            f"{exc.error_enum.code} - {exc.error_enum.detail}\n")
 
         response = ErrorResponse(
             code=ErrorEnum.TASK_FAIL.code,

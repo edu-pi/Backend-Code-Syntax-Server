@@ -25,7 +25,7 @@ async def correct(correct_request: CorrectRequest):
     )
 
 
-@advice_router.post("/v1/hint")
+@advice_router.post("/v1/advice/hint")
 async def hint(hint_request: HintRequest):
     hint_response = await ai_service.hint(line=hint_request.line, code=hint_request.source_code)
 

@@ -1,5 +1,5 @@
 import aiofiles
-from json import loads
+from json import loads, JSONDecodeError
 from os import path
 from time import sleep
 from openai import OpenAIError, APITimeoutError, AsyncOpenAI
@@ -38,7 +38,7 @@ async def _load_template(file_path) -> str:
         return await file.read()
 
 
-async def _call_openai_api(prompt: str,  max_retries: int = 2, delay: int = 1) -> dict:
+async def _call_openai_api(prompt: str,  max_retries: int = 2, delay: int = 3) -> dict:
     retries = 0
     client = AsyncOpenAI(api_key=Settings.OPEN_API_KEY, timeout=20, max_retries=1) # 20s
 
@@ -49,7 +49,7 @@ async def _call_openai_api(prompt: str,  max_retries: int = 2, delay: int = 1) -
                 messages=[
                     {"role": "system", "content": prompt},
                 ],
-                max_tokens=150,
+                max_tokens=2000,
                 n=1,  # 한 질문에 응답의 개수
                 stop=None,  # 모델 중단 기준 문자열
                 temperature=0.4,  # 같은 질문에 일관성 정도 (0~1 : 높을수록 창의적인 답변)
@@ -57,16 +57,19 @@ async def _call_openai_api(prompt: str,  max_retries: int = 2, delay: int = 1) -
             )
             return loads(response.choices[0].message.content)
 
+        except JSONDecodeError as e:
+            logger.error(f"OpenAI: {e}. Request failed due to exceeding max token limit")
+            raise OpenaiException(ErrorEnum.OPENAI_MAX_TOKEN_LIMIT, e)
+
         except APITimeoutError as e:
-            # Timeout 발생 시 재시도
             retries += 1
             if retries < max_retries:
-                logger.error(f"OpenAI API 연결 실패: {e}. {delay}초 후 재시도 ({retries}/{max_retries})")
+                logger.error(f"OpenAI: {e}. Request failed due to Server error. retry after {delay}s ({retries}/{max_retries})")
                 sleep(delay)
             else:
-                raise OpenaiException(ErrorEnum.OPNEAI_SERVER_ERROR, e)
+                raise OpenaiException(ErrorEnum.OPENAI_SERVER_ERROR, e)
 
         except OpenAIError as e:
-            raise OpenaiException(ErrorEnum.OPNEAI_SERVER_ERROR, e)
+            raise OpenaiException(ErrorEnum.OPENAI_SERVER_ERROR, e)
 
 
