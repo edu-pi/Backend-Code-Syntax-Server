@@ -13,7 +13,8 @@ class ErrorEnum(Enum):
     INPUT_SIZE_MATCHING_ERROR = "CS-400005", "사용자 입력 개수가 일치하지 않습니다."
 
     #500
-    OPENAI_SERVER_ERROR = ("CS-504001", "Open AI API 내부 서버 에러입니다.")
+    OPENAI_SERVER_ERROR = ("CS-504001", "Open AI internal server error")
+    OPENAI_MAX_TOKEN_LIMIT = ("CS-504002", "Open AI max token limit")
 
     def __init__(self, code, detail):
         self.code = code
