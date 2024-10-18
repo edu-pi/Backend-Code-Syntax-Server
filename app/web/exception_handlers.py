@@ -1,3 +1,5 @@
+from typing import Union
+
 from openai import OpenAIError
 from starlette import status
 from fastapi import FastAPI, Request
@@ -41,12 +43,8 @@ def setup_exception_handlers(app: FastAPI):
         )
 
     @app.exception_handler(CodeExecuteError)
-    async def code_execute_exception_handler(request: Request, exc: CodeExecuteError):
-        response = ErrorResponse(code=exc.error_enum.code, detail=exc.error_enum.detail, result=exc.result)
-        return JSONResponse(status_code=exc.status, content=response.to_dict())
-
     @app.exception_handler(CodeSyntaxError)
-    async def code_execute_exception_handler(request: Request, exc: CodeSyntaxError):
+    async def code_error_exception_handler(request: Request, exc: CodeExecuteError | CodeSyntaxError):
         response = ErrorResponse(code=exc.error_enum.code, detail=exc.error_enum.detail, result=exc.result)
         return JSONResponse(status_code=exc.status, content=response.to_dict())
 
