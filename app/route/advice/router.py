@@ -6,12 +6,12 @@ from app.route.advice.models.hint_request import HintRequest
 from app.web.models.success_reponse import SuccessResponse
 from app.route.advice.service import ai_service
 
-advice_router = APIRouter()
+router = APIRouter()
 
 
-@advice_router.post("/v1/advice/correct")
+@router.post("/v1/advice/correction")
 async def correct(correct_request: CorrectRequest):
-
+    # TODO : await 문법 정확하게 찾아보기 , 세트인지
     correct_response = await ai_service.correct(code=correct_request.source_code)
 
     success_response = SuccessResponse(
@@ -25,7 +25,7 @@ async def correct(correct_request: CorrectRequest):
     )
 
 
-@advice_router.post("/v1/advice/hint")
+@router.post("/v1/advice/hint")
 async def hint(hint_request: HintRequest):
     hint_response = await ai_service.hint(line=hint_request.line, code=hint_request.source_code)
 
