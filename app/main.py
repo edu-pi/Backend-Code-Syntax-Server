@@ -7,7 +7,7 @@ from app.route.execute.execute_router import execute_router
 from app.web.logger import log_request, log_response
 
 SWAGGER_HEADERS = {
-    "title": "Code Syntax api",
+    "title": "Coding Assist api",
     "version": "1.0.0",
 }
 
@@ -28,14 +28,14 @@ app.middleware("http")(log_request)
 app.middleware("http")(log_response)
 
 # 라우터 등록
-app.include_router(advice_router,  prefix="/edupi-syntax")
-app.include_router(execute_router,  prefix="/edupi-syntax")
+app.include_router(advice_router,  prefix="/edupi-assist")
+app.include_router(execute_router,  prefix="/edupi-assist")
 
 # 핸들러 등록
 exception_handlers.setup_exception_handlers(app)
 
 
-@app.get("/edupi-syntax", response_class=JSONResponse)
+@app.get("/edupi-assist/health-check", response_class=JSONResponse)
 def root():
     return JSONResponse(
         status_code=200,
