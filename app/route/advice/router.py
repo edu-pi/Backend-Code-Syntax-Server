@@ -11,7 +11,6 @@ router = APIRouter()
 
 @router.post("/v1/advice/correction")
 async def correct(correct_request: CorrectRequest):
-    # TODO : await 문법 정확하게 찾아보기 , 세트인지
     correct_response = await ai_service.correct(code=correct_request.source_code)
 
     success_response = SuccessResponse(
