@@ -18,14 +18,15 @@ def get_logger():
     return logger
 
 
-# Request 로깅 미들웨어
+# Request 로깅 미들웨어 - request 로깅 필요할 시 주석 제거
 async def log_request(request: Request, call_next):
-    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    body = await request.body()
-    logger.info(f"[{current_time}] Request: {request.method} {request.url}  {body.decode()}")
-
-    response = await call_next(request)
-    return response
+    pass
+    # current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # body = await request.body()
+    # logger.info(f"[{current_time}] Request: {request.method} {request.url}  {body.decode()}")
+    #
+    # response = await call_next(request)
+    # return response
 
 
 # Response 로깅 미들웨어

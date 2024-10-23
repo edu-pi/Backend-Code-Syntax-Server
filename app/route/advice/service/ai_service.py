@@ -9,12 +9,11 @@ from app.route.advice.models.correct_response import CorrectResponse
 from app.route.advice.models.hint_response import HintResponse
 from app.web.exception.enum.error_enum import ErrorEnum
 from app.route.advice.exception.openai_exception import OpenaiException
-from app.route.advice.service.prompts.prompt_file_name import PromptFileName
 from app.web.logger import logger
 
 
 async def correct(code: str) -> CorrectResponse:
-    template_path = path.join(path.dirname(__file__), 'prompts', PromptFileName.CORRECT_TEMPLATE)
+    template_path = path.join(path.dirname(__file__), 'prompts', 'correct_template.txt')
     template = await _load_template(template_path)
 
     prompt = template.format(code=code)
@@ -24,7 +23,7 @@ async def correct(code: str) -> CorrectResponse:
 
 
 async def hint(line: int, code: str) -> HintResponse:
-    template_path = path.join(path.dirname(__file__), 'prompts', PromptFileName.HINT_TEMPLATE)
+    template_path = path.join(path.dirname(__file__), 'prompts', 'hint_template.txt')
     template = await _load_template(template_path)
 
     prompt = template.format(line=line, code=code)
@@ -38,9 +37,9 @@ async def _load_template(file_path) -> str:
         return await file.read()
 
 
-async def _call_openai_api(prompt: str,  max_retries: int = 2, delay: int = 3) -> dict:
+async def _call_openai_api(prompt: str,  max_retries: int = 3, delay: int = 3) -> dict:
     retries = 0
-    client = AsyncOpenAI(api_key=Settings.OPEN_API_KEY, timeout=20, max_retries=1) # 20s
+    client = AsyncOpenAI(api_key=Settings.OPEN_API_KEY, timeout=1, max_retries=max_retries)
 
     while retries < max_retries:
         try:
