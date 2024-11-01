@@ -28,7 +28,7 @@ async def log_request(request: Request, call_next):
     return response
 
 
-# Response 로깅 미들웨어
+# # Response 로깅 미들웨어
 async def log_response(request: Request, call_next):
     response = await call_next(request)
 

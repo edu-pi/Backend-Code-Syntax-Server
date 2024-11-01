@@ -36,7 +36,6 @@ app.include_router(execute_router,  prefix="/edupi-assist")
 # 핸들러 등록
 exception_handlers.setup_exception_handlers(app)
 
-
 @app.get("/edupi-assist/health-check", response_class=JSONResponse)
 def root():
     return JSONResponse(

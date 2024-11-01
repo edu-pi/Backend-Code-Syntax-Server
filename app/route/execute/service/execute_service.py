@@ -6,36 +6,48 @@ import textwrap
 
 from RestrictedPython import compile_restricted, PrintCollector
 
-from app.config.restricted_python_config import RestrictedPythonConfig
 from app.route.execute.exception.code_execute_error import CodeExecuteError
 from app.route.execute.exception.code_syntax_error import CodeSyntaxError
-from app.route.execute.exception.input_size_matching_error import InputSizeMatchingError
 from app.web.exception.enum.error_enum import ErrorEnum
+
+FORBIDDEN_IMPORTS = ["os", "sys", "subprocess", "shutil"]
 
 
 def execute_code(source_code: str, user_input: str):
-    code = textwrap.dedent(source_code)
-    restricted_config = RestrictedPythonConfig(user_input)
+    if _contains_forbidden_imports(source_code):
+        # 보안상 실행 안함
+        raise CodeExecuteError(ErrorEnum.CODE_EXEC_ERROR)
 
     try:
-        byte_code = compile_restricted(code, filename="<string>", mode="exec")
-        restricted_locals = restricted_config.get_limited_locals()
-        restricted_globals = restricted_config.get_limited_globals()
+        process = subprocess.run(
+            args=["python3", "-c", source_code],
+            input=user_input,
+            capture_output=True,    # stdout, stderr 별도의 Pipe에서 처리
+            timeout=3,  # limit child process execute time
+            check=True,  # CalledProcessError exception if return_code is 0
+            text=True
+        )
+        return process.stdout
 
-        exec(byte_code, restricted_globals, restricted_locals)
+    # 프로세스 실행 중 비정상 종료
+    except subprocess.CalledProcessError as e:
+        raise CodeSyntaxError(ErrorEnum.CODE_SYNTAX_ERROR, {"error": e.stderr})
 
-        return _get_print_result(restricted_locals)
-
-    except InputSizeMatchingError as e:
-        raise CodeExecuteError(e.error_enum)
-
-    except SyntaxError as e:
-        error = _get_error_message(source_code)
-        raise CodeSyntaxError(ErrorEnum.CODE_SYNTAX_ERROR, {"error": error} if e.args else {})
+    # 실행 시간 초과
+    except subprocess.TimeoutExpired as e:
+        raise CodeSyntaxError(ErrorEnum.TASK_FAIL)
 
     except Exception as e:
         error = _get_error_message(source_code)
         raise CodeExecuteError(ErrorEnum.CODE_EXEC_ERROR, {"error": error} if e.args else {})
+
+
+def _contains_forbidden_imports(code: str) -> bool:
+    # 금지된 모듈이 코드에 있는지 확인
+    for module in FORBIDDEN_IMPORTS:
+        if re.search(rf'\bimport\s+{module}\b', code):
+            return True
+    return False
 
 
 def _get_print_result(restricted_locals):
