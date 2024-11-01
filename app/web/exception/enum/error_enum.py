@@ -11,6 +11,7 @@ class ErrorEnum(Enum):
 
     CODE_EXEC_ERROR = "CS-400004", "지원하지 않는 형식입니다."
     INPUT_SIZE_MATCHING_ERROR = "CS-400005", "사용자 입력 개수가 일치하지 않습니다."
+    CODE_VISUALIZE_ERROR = "CS-400006", "아직 시각화할 수 없는 문법이 포함되어 있습니다."
 
     #500
     OPENAI_SERVER_ERROR = ("CS-504001", "Open AI internal server error")

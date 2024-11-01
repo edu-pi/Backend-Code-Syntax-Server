@@ -1,4 +1,4 @@
-from typing import Union
+from venv import logger
 
 from openai import OpenAIError
 from starlette import status
@@ -7,12 +7,12 @@ from fastapi.responses import JSONResponse
 
 from app.route.execute.exception.code_execute_error import CodeExecuteError
 from app.route.execute.exception.code_syntax_error import CodeSyntaxError
+from app.route.execute.exception.code_visualize_error import CodeVisualizeError
 from app.web.exception.base_exception import BaseCustomException
 from app.web.exception.enum.error_enum import ErrorEnum
 from app.web.exception.invalid_exception import InvalidException
 from app.route.advice.exception.openai_exception import OpenaiException
 from app.web.models.error_response import ErrorResponse
-from app.web.logger import logger
 
 
 def setup_exception_handlers(app: FastAPI):
@@ -44,7 +44,8 @@ def setup_exception_handlers(app: FastAPI):
 
     @app.exception_handler(CodeExecuteError)
     @app.exception_handler(CodeSyntaxError)
-    async def code_error_exception_handler(request: Request, exc: CodeExecuteError | CodeSyntaxError):
+    @app.exception_handler(CodeVisualizeError)
+    async def code_error_exception_handler(request: Request, exc: CodeExecuteError | CodeSyntaxError | CodeVisualizeError):
         response = ErrorResponse(code=exc.error_enum.code, detail=exc.error_enum.detail, result=exc.result)
         return JSONResponse(status_code=exc.status, content=response.to_dict())
 
