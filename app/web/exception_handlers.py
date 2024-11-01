@@ -12,6 +12,7 @@ from app.web.exception.base_exception import BaseCustomException
 from app.web.exception.enum.error_enum import ErrorEnum
 from app.web.exception.invalid_exception import InvalidException
 from app.route.advice.exception.openai_exception import OpenaiException
+from app.web.exception.task_fail_exception import TaskFailException
 from app.web.models.error_response import ErrorResponse
 
 
@@ -29,7 +30,8 @@ def setup_exception_handlers(app: FastAPI):
         )
 
     @app.exception_handler(OpenaiException)
-    async def openai_exception_handler(request: Request, exc: OpenaiException):
+    @app.exception_handler(TaskFailException)
+    async def openai_exception_handler(request: Request, exc: OpenaiException | TaskFailException):
         logger.info(
             f"{exc.error_enum.code} - {exc.error_enum.detail}\n")
 
