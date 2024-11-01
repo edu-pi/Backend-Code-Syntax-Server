@@ -17,7 +17,7 @@ async def visualize(code_request: CodeRequest):
 
     success_response = SuccessResponse(
         detail="success code analysis",
-        result={"code": analysis_result.json()}
+        result={"code": analysis_result}
     )
 
     return JSONResponse(

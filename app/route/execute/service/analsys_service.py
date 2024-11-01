@@ -8,5 +8,5 @@ def analyze_code(source_code: str, user_input: str):
         visualise_url,
         json={"source_code": source_code, "input": user_input}
     )
-    return success_response
+    return success_response.json().get("result").get("code")
 
