@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from starlette.responses import JSONResponse
 
+from app.config.settings import Settings
 from app.web import exception_handlers
 from app.route.advice.router import router as advice_router
 from app.route.execute.router import router as execute_router
@@ -25,7 +26,8 @@ app = FastAPI(
 
 # 미들웨어 등록
 app.middleware("http")(log_request)
-app.middleware("http")(log_response)
+if Settings.ENVIRONMENT == "dev":
+    app.middleware("http")(log_response)
 
 # 라우터 등록
 app.include_router(advice_router,  prefix="/edupi-assist")
