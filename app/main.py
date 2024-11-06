@@ -30,7 +30,7 @@ if Settings.ENVIRONMENT == "dev":
     app.middleware("http")(log_response)
 
 # 라우터 등록
-app.include_router(advice_router,  prefix="/edupi-assist")
+# app.include_router(advice_router,  prefix="/edupi-assist")
 app.include_router(execute_router,  prefix="/edupi-assist")
 
 # 핸들러 등록

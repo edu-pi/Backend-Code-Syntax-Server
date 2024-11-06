@@ -49,7 +49,7 @@ def setup_exception_handlers(app: FastAPI):
     @app.exception_handler(CodeVisualizeError)
     async def code_error_exception_handler(request: Request, exc: CodeExecuteError | CodeSyntaxError | CodeVisualizeError):
         response = ErrorResponse(code=exc.error_enum.code, detail=exc.error_enum.detail, result=exc.result)
-        return JSONResponse(status_code=exc.status, content=response.to_dict())
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=response.to_dict())
 
     @app.exception_handler(BaseCustomException)
     async def base_exception_handler(request: Request, exc: BaseCustomException):
