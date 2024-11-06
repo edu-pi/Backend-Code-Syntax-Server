@@ -5,6 +5,7 @@ from app.route.execute.exception.code_execute_error import CodeExecuteError
 from app.route.execute.exception.code_syntax_error import CodeSyntaxError
 from app.web.exception.enum.error_enum import ErrorEnum
 from app.web.exception.task_fail_exception import TaskFailException
+from app.web.logger import logger
 
 FORBIDDEN_IMPORTS = ["os", "sys", "subprocess", "shutil"]
 
@@ -30,6 +31,7 @@ def execute_code(source_code: str, user_input: str):
         raise CodeSyntaxError(ErrorEnum.CODE_SYNTAX_ERROR, {"error": e.stderr})
 
     except Exception as e:
+        logger.error("[Unexpected Exception] execute_code()")
         raise TaskFailException(ErrorEnum.CODE_EXEC_SERVER_ERROR, dict(e.args))
 
 
