@@ -30,11 +30,12 @@ if Settings.ENVIRONMENT == "dev":
     app.middleware("http")(log_response)
 
 # 라우터 등록
-# app.include_router(advice_router,  prefix="/edupi-assist")
+app.include_router(advice_router,  prefix="/edupi-assist")
 app.include_router(execute_router,  prefix="/edupi-assist")
 
 # 핸들러 등록
 exception_handlers.setup_exception_handlers(app)
+
 
 @app.get("/edupi-assist/health-check", response_class=JSONResponse)
 def root():
