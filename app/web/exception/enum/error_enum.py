@@ -7,12 +7,13 @@ class ErrorEnum(Enum):
     TASK_FAIL = "CA-400001", "There is a problem with the service login"
     CODE_SYNTAX_ERROR = "CA-400002", "The code is incorrect syntax"
     CODE_CORRECT_FAIL = "CA-400003", "code correct fail"
-    UNKNOWN_ERROR = "CA-400999", "The unexpected error"
-
     CODE_EXEC_ERROR = "CA-400004", "The format is not supported for security reasons"
     CODE_EXEC_SECURITY_ERROR = "CA-400004", "The format is not supported for security reasons"
     INPUT_SIZE_MATCHING_ERROR = "CA-400005", "The number of user inputs does not match."
     CODE_VISUALIZE_ERROR = "CA-400006", "It contains syntax that we can't visualize yet."
+
+    UNKNOWN_ERROR = "CA-400999", "The unexpected error"     # Exception으로 잡힐 때 해당 코드 사용
+
 
     #500
     CODE_EXEC_SERVER_ERROR = "CA-503001", "There is a problem with the execute service login"
