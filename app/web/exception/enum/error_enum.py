@@ -10,7 +10,9 @@ class ErrorEnum(Enum):
     CODE_EXEC_ERROR = "CA-400004", "The format is not supported for security reasons"
     CODE_EXEC_SECURITY_ERROR = "CA-400004", "The format is not supported for security reasons"
     INPUT_SIZE_MATCHING_ERROR = "CA-400005", "The number of user inputs does not match."
-    CODE_VISUALIZE_ERROR = "CA-400006", "It contains syntax that we can't visualize yet."
+    NOT_SUPPORTED_VISUALIZE = "CA-400006", "It contains syntax that we can't visualize yet."
+    CODE_EXEC_TIMEOUT = "CA-400007", "The code execution is too long."
+    CODE_VIZ_TIMEOUT = "CA-400007", "The code visualization is too long."
 
     UNKNOWN_ERROR = "CA-400999", "The unexpected error"     # Exception으로 잡힐 때 해당 코드 사용
 

@@ -2,13 +2,14 @@ import aiofiles
 from json import loads, JSONDecodeError
 from os import path
 from time import sleep
-from openai import OpenAIError, APITimeoutError, AsyncOpenAI
+from openai import APITimeoutError, AsyncOpenAI
 
 from app.config.settings import Settings
 from app.route.advice.models.correct_response import CorrectResponse
 from app.route.advice.models.hint_response import HintResponse
 from app.web.exception.enum.error_enum import ErrorEnum
 from app.route.advice.exception.openai_exception import OpenaiException
+from app.web.exception.task_fail_exception import TaskFailException
 from app.web.logger import logger
 
 
@@ -37,9 +38,9 @@ async def _load_template(file_path) -> str:
         return await file.read()
 
 
-async def _call_openai_api(prompt: str,  max_retries: int = 3, delay: int = 3) -> dict:
+async def _call_openai_api(prompt: str,  max_retries: int = 2, delay: int = 2) -> dict:
     retries = 0
-    client = AsyncOpenAI(api_key=Settings.OPEN_API_KEY, timeout=1, max_retries=max_retries)
+    client = AsyncOpenAI(api_key=Settings.OPEN_API_KEY, timeout=3, max_retries=max_retries)
 
     while retries < max_retries:
         try:
@@ -66,9 +67,9 @@ async def _call_openai_api(prompt: str,  max_retries: int = 3, delay: int = 3) -
                 logger.error(f"OpenAI: {e}. Request failed due to Server error. retry after {delay}s ({retries}/{max_retries})")
                 sleep(delay)
             else:
-                raise OpenaiException(ErrorEnum.OPENAI_SERVER_ERROR, e)
+                raise OpenaiException(ErrorEnum.OPENAI_SERVER_ERROR)
 
-        except OpenAIError as e:
-            raise OpenaiException(ErrorEnum.OPENAI_SERVER_ERROR, e)
+        except Exception as e:
+            raise TaskFailException(ErrorEnum.OPENAI_SERVER_ERROR)
 
 
