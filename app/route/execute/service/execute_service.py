@@ -36,15 +36,16 @@ def execute_code(source_code: str, user_input: str):
 
     except Exception as e:
         logger.error("[Unexpected Exception] execute_code() {e.__class__.args}")
-        raise TaskFailException(ErrorEnum.CODE_EXEC_SERVER_ERROR, e.args)
+        raise TaskFailException(ErrorEnum.CODE_EXEC_SERVER_ERROR, e.args[0])
 
 
 def _get_error_line_number(error_msg):
-    # pattern : 'line '숫자', in'
     matches = re.findall(r'line (\d+), in', error_msg)
     if matches:
-        return int(matches[-1])
-    return 1
+        return matches[-1]
+
+    matches = re.findall(r'line (\d+)', error_msg)
+    return matches[-1] if matches else 1
 
 
 def _contains_forbidden_imports(code: str) -> bool:
