@@ -24,7 +24,7 @@ def analyze_code(source_code: str, user_input: str):
         if error_code == 'CV-400001':
             raise CodeVisualizeError(ErrorEnum.NOT_SUPPORTED_VISUALIZE)
         elif error_code == 'CV-400002':
-            raise CodeVisualizeError(ErrorEnum.CODE_EXEC_TIMEOUT)
+            raise CodeVisualizeError(ErrorEnum.CODE_VIZ_TIMEOUT)
         else:
             raise TaskFailException(ErrorEnum.TASK_FAIL, response.content)
 

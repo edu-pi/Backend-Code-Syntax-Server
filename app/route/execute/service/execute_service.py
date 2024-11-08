@@ -20,7 +20,7 @@ def execute_code(source_code: str, user_input: str):
             args=["python3", "-c", source_code],
             input=user_input,
             capture_output=True,  # stdout, stderr 별도의 Pipe에서 처리
-            timeout=2,  # limit child process execute time
+            timeout=1,  # limit child process execute time
             check=True,  # CalledProcessError exception if return_code is 0
             text=True
         )
