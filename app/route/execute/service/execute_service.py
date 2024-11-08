@@ -20,7 +20,7 @@ def execute_code(source_code: str, user_input: str):
             args=["python3", "-c", source_code],
             input=user_input,
             capture_output=True,  # stdout, stderr 별도의 Pipe에서 처리
-            timeout=3,  # limit child process execute time
+            timeout=2,  # limit child process execute time
             check=True,  # CalledProcessError exception if return_code is 0
             text=True
         )
@@ -29,11 +29,14 @@ def execute_code(source_code: str, user_input: str):
     # 프로세스 실행 중 비정상 종료
     except subprocess.CalledProcessError as e:
         line_number = _get_error_line_number(e.stderr)
-        raise CodeSyntaxError(ErrorEnum.CODE_SYNTAX_ERROR, {"lineNumber": line_number, "error": e.stderr})
+        raise CodeSyntaxError(ErrorEnum.CODE_SYNTAX_ERROR, {"lineNumber": line_number, "errorMessage": e.stderr})
+
+    except subprocess.TimeoutExpired as e:
+        raise CodeExecuteError(ErrorEnum.CODE_EXEC_TIMEOUT)
 
     except Exception as e:
-        logger.error("[Unexpected Exception] execute_code()")
-        raise TaskFailException(ErrorEnum.CODE_EXEC_SERVER_ERROR, dict(e.args))
+        logger.error("[Unexpected Exception] execute_code() {e.__class__.args}")
+        raise TaskFailException(ErrorEnum.CODE_EXEC_SERVER_ERROR, e.args)
 
 
 def _get_error_line_number(error_msg):

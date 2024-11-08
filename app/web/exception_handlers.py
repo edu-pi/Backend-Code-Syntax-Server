@@ -50,6 +50,7 @@ def setup_exception_handlers(app: FastAPI):
     @app.exception_handler(CodeVisualizeError)
     async def code_error_exception_handler(request: Request, exc: CodeExecuteError | CodeSyntaxError | CodeVisualizeError):
         logger.info(f"[{exc.error_enum}] : code:{exc.error_enum.code}, detail:{exc.error_enum.detail}, {exc.args}")
+
         response = ErrorResponse(code=exc.error_enum.code, detail=exc.error_enum.detail, result=exc.result)
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=response.to_dict())
 
