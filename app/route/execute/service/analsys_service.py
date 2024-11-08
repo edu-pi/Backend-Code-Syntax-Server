@@ -7,9 +7,7 @@ from app.web.exception.task_fail_exception import TaskFailException
 
 
 def analyze_code(source_code: str, user_input: str):
-    global response
     visualise_url = "/".join([Settings.ENGINE_SERVER, "v1", "python"])
-
     try:
         response = requests.post(
             visualise_url,
@@ -26,5 +24,5 @@ def analyze_code(source_code: str, user_input: str):
         elif error_code == 'CV-400002':
             raise CodeVisualizeError(ErrorEnum.CODE_VIZ_TIMEOUT)
         else:
-            raise TaskFailException(ErrorEnum.TASK_FAIL, response.content)
+            raise TaskFailException(ErrorEnum.TASK_FAIL)
 
