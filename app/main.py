@@ -25,7 +25,7 @@ app = FastAPI(
 )
 
 # 미들웨어 등록
-app.middleware("http")(log_request)
+# app.middleware("http")(log_request)
 if Settings.ENVIRONMENT == "dev":
     app.middleware("http")(log_response)
 

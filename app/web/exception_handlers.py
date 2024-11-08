@@ -32,8 +32,21 @@ def setup_exception_handlers(app: FastAPI):
         )
 
     @app.exception_handler(OpenaiException)
+    async def openai_exception_handler(request: Request, exc: OpenaiException):
+        logger.error(f"[openai_exception] : code:{exc.error_enum.code}, detail:{exc.error_enum.detail}, {exc.args}")
+
+        response = ErrorResponse(
+            code=ErrorEnum.OPENAI_SERVER_ERROR.code,
+            detail=exc.error_enum.detail,
+            result=exc.result
+        )
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content=response.to_dict()
+        )
+
     @app.exception_handler(TaskFailException)
-    async def openai_exception_handler(request: Request, exc: OpenaiException | TaskFailException):
+    async def task_fail_exception_handler(request: Request, exc: TaskFailException):
         logger.error(f"[Task fail Exception] : code:{exc.error_enum.code}, detail:{exc.error_enum.detail}, {exc.args}")
 
         response = ErrorResponse(
@@ -48,22 +61,12 @@ def setup_exception_handlers(app: FastAPI):
     @app.exception_handler(CodeExecuteError)
     @app.exception_handler(CodeSyntaxError)
     @app.exception_handler(CodeVisualizeError)
-    async def code_error_exception_handler(request: Request, exc: CodeExecuteError | CodeSyntaxError | CodeVisualizeError):
+    async def code_error_exception_handler(request: Request,
+                                           exc: CodeExecuteError | CodeSyntaxError | CodeVisualizeError):
         logger.info(f"[{exc.error_enum}] : code:{exc.error_enum.code}, detail:{exc.error_enum.detail}, {exc.args}")
+
         response = ErrorResponse(code=exc.error_enum.code, detail=exc.error_enum.detail, result=exc.result)
         return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=response.to_dict())
-
-    @app.exception_handler(BaseCustomException)
-    async def base_exception_handler(request: Request, exc: BaseCustomException):
-        response = ErrorResponse(
-            code=exc.error_enum.code,
-            detail=exc.error_enum.detail,
-            result=exc.result
-        )
-        return JSONResponse(
-            status_code=exc.status,
-            content=response.to_dict()
-        )
 
     @app.exception_handler(Exception)
     async def exception_handler(request: Request, exc: Exception):
