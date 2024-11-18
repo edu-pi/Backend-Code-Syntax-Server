@@ -1,8 +1,7 @@
 from fastapi import APIRouter
 from starlette.responses import JSONResponse
 
-from app.route.advice.models.correct_request import CorrectRequest
-from app.route.advice.models.hint_request import HintRequest
+from app.route.advice.models.assist_request import AssistRequest
 from app.web.models.success_reponse import SuccessResponse
 from app.route.advice.service import ai_service
 
@@ -10,8 +9,8 @@ router = APIRouter()
 
 
 @router.post("/v1/advice/correction")
-async def correct(correct_request: CorrectRequest):
-    correct_response = await ai_service.correct(code=correct_request.source_code)
+async def correct(assist_request: AssistRequest):
+    correct_response = await ai_service.correct(line=assist_request.line, code=assist_request.source_code)
 
     success_response = SuccessResponse(
         detail="success correct",
@@ -25,8 +24,8 @@ async def correct(correct_request: CorrectRequest):
 
 
 @router.post("/v1/advice/hint")
-async def hint(hint_request: HintRequest):
-    hint_response = await ai_service.hint(line=hint_request.line, code=hint_request.source_code)
+async def hint(assist_request: AssistRequest):
+    hint_response = await ai_service.hint(line=assist_request.line, code=assist_request.source_code)
 
     success_response = SuccessResponse(
         detail="success hint",

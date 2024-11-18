@@ -13,14 +13,15 @@ from app.web.exception.task_fail_exception import TaskFailException
 from app.web.logger import logger
 
 
-async def correct(code: str) -> CorrectResponse:
+async def correct(line: int, code: str) -> CorrectResponse:
     template_path = path.join(path.dirname(__file__), 'prompts', 'correct_template.txt')
     template = await _load_template(template_path)
 
-    prompt = template.format(code=code)
+    print(line)
+    prompt = template.format(line=line, code=code)
     response_data = await _call_openai_api(prompt)
 
-    return await CorrectResponse.of(response_data)
+    return await CorrectResponse.of(response_data, line)
 
 
 async def hint(line: int, code: str) -> HintResponse:
