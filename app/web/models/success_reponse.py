@@ -1,6 +1,6 @@
 class SuccessResponse:
     def __init__(self, detail: str, result: dict = None):
-        self.code = "CS-200000"
+        self.code = "CA-200000"
         self.detail = detail
         self.result = result
 

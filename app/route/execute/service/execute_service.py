@@ -29,6 +29,9 @@ def execute_code(source_code: str, user_input: str):
     # 프로세스 실행 중 비정상 종료
     except subprocess.CalledProcessError as e:
         line_number = _get_error_line_number(e.stderr)
+        if _is_input_missmatch(e.stderr):
+            raise CodeExecuteError(ErrorEnum.INPUT_SIZE_MATCHING_ERROR)
+
         raise CodeSyntaxError(ErrorEnum.CODE_SYNTAX_ERROR, {"lineNumber": line_number, "errorMessage": e.stderr})
 
     except subprocess.TimeoutExpired as e:
@@ -38,6 +41,11 @@ def execute_code(source_code: str, user_input: str):
         logger.error("[Unexpected Exception] execute_code() {e.__class__.args}")
         raise TaskFailException(ErrorEnum.CODE_EXEC_SERVER_ERROR, e.args[0])
 
+
+def _is_input_missmatch(error_msg):
+    if "EOF when reading" in error_msg:
+        return True
+    return False
 
 def _get_error_line_number(error_msg):
     matches = re.findall(r'line (\d+), in', error_msg)
